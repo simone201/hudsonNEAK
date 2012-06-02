@@ -82,6 +82,8 @@ find . | cpio -o -H newc | gzip > ../ramdisk.cpio.gz
 cd ..
 
 ./mkbootimg --kernel zImage --ramdisk ramdisk.cpio.gz --board smdk4x12 --base 0x10000000 --pagesize 2048 --ramdiskaddr 0x11000000 -o boot.img
+cp boot.img releasetools/zip/
+cp boot.img releasetools/tar/
 
 # Creating flashable zip and tar
 cd releasetools/zip
