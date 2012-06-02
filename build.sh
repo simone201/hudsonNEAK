@@ -53,7 +53,7 @@ fi
 
 if [ ! -d arm-eabi-4.4.3 ]
 then
-  curl -O http://dl.dropbox.com/u/58452225/arm-eabi-4.4.3.tar
+  curl -O http://www.mimeko.it/neak-kernel/arm-eabi-4.4.3.tar
   tar xvf arm-eabi-4.4.3.tar
 fi
 
