@@ -44,10 +44,17 @@ export BUILD_NO=$BUILD_NUMBER
 unset BUILD_NUMBER
 export ROOTFS_PATH="ramdisk-samsung"
 export KBUILD_BUILD_VERSION="NEAK-SGS3-$(date +%d%m%Y)"
+export TOOLCHAIN="$WORKSPACE/arm-eabi-4.4.3/bin/arm-eabi-"
 
 if [ -f ~/.jenkins_profile ]
 then
   . ~/.jenkins_profile
+fi
+
+if [ ! -d arm-eabi-4.4.3 ]
+then
+  curl -O http://dl.dropbox.com/u/58452225/arm-eabi-4.4.3.tar
+  tar xvf arm-eabi-4.4.3.tar
 fi
 
 if [ ! -d galaxys3 ]
@@ -59,9 +66,9 @@ cd galaxys3
 git checkout $REPO_BRANCH
 git pull
 
-make -j8 $CLEAN_TYPE
-make -j8 neak_defconfig
-make -j8
+make CROSS_COMPILE=$TOOLCHAIN -j8 $CLEAN_TYPE
+make CROSS_COMPILE=$TOOLCHAIN -j8 neak_defconfig
+make CROSS_COMPILE=$TOOLCHAIN -j8
 
 rm -f releasetools/tar/$KBUILD_BUILD_VERSION.tar
 rm -f releasetools/zip/$KBUILD_BUILD_VERSION.zip
