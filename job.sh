@@ -5,6 +5,7 @@ then
 fi
 
 cd $WORKSPACE
+export WORKSPACE2=$PWD
 mkdir -p ../neak
 cd ../neak
 export WORKSPACE=$PWD

@@ -103,5 +103,11 @@ check_result "Build failed."
 cp releasetools/zip/*.zip $WORKSPACE/archive
 cp releasetools/tar/*.tar $WORKSPACE/archive
 
+rm -rf $WORKSPACE2/archive
+mkdir $WORKSPACE2/archive
+
+cp releasetools/zip/*.zip $WORKSPACE2/archive
+cp releasetools/tar/*.tar $WORKSPACE2/archive
+
 # chmod the files in case UMASK blocks permissions
-chmod -R ugo+r $WORKSPACE/archive
+chmod -R ugo+r $WORKSPACE2/archive
