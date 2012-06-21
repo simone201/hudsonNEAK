@@ -50,8 +50,10 @@ export BUILD_NO=$BUILD_NUMBER
 unset BUILD_NUMBER
 if [ $BUILD_TYPE == "aosp" ]
 then
+echo "It's AOSP"
 export ROOTFS_PATH="ramdisk-aosp"
 else
+echo "It's Samsung"
 export ROOTFS_PATH="ramdisk-samsung"
 fi
 export KBUILD_BUILD_VERSION="NEAK-SGS3-$(date +%d%m%Y)"
