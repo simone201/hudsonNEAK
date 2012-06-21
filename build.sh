@@ -32,6 +32,12 @@ then
   exit 1
 fi
 
+if [ -z "$BUILD_TYPE" ]
+then
+  echo BUILD_TYPE not specified
+  exit 1
+fi
+
 # colorization fix in Jenkins
 export CL_PFX="\"\033[34m\""
 export CL_INS="\"\033[32m\""
@@ -42,7 +48,12 @@ rm -rf archive
 mkdir -p archive
 export BUILD_NO=$BUILD_NUMBER
 unset BUILD_NUMBER
+if [ $BUILD_TYPE == "aosp" ]
+then
+export ROOTFS_PATH="ramdisk-aosp"
+else
 export ROOTFS_PATH="ramdisk-samsung"
+fi
 export KBUILD_BUILD_VERSION="NEAK-SGS3-$(date +%d%m%Y)"
 export TOOLCHAIN="$WORKSPACE/arm-eabi-4.4.3/bin/arm-eabi-"
 
@@ -67,7 +78,12 @@ git checkout $REPO_BRANCH
 git pull
 
 make CROSS_COMPILE=$TOOLCHAIN -j8 $CLEAN_TYPE
+if [ $BUILD_TYPE = "aosp" ]
+then
+make CROSS_COMPILE=$TOOLCHAIN -j8 neak_aosp_defconfig
+else
 make CROSS_COMPILE=$TOOLCHAIN -j8 neak_defconfig
+fi
 make CROSS_COMPILE=$TOOLCHAIN -j8
 
 rm -f releasetools/tar/$KBUILD_BUILD_VERSION.tar
@@ -87,10 +103,20 @@ cp boot.img releasetools/tar/
 
 # Creating flashable zip and tar
 cd releasetools/zip
+if [ $BUILD_TYPE == "aosp" ]
+then
+zip -r "$KBUILD_BUILD_VERSION"-AOSP.zip *
+else
 zip -r $KBUILD_BUILD_VERSION.zip *
+fi
 cd ..
 cd tar
+if [ $BUILD_TYPE == "aosp" ]
+then
+tar cvf "$KBUILD_BUILD_VERSION"-AOSP.tar boot.img && ls -lh "$KBUILD_BUILD_VERSION"-AOSP.tar
+else
 tar cvf $KBUILD_BUILD_VERSION.tar boot.img && ls -lh $KBUILD_BUILD_VERSION.tar
+fi
 cd ../..
 
 # Cleanup
