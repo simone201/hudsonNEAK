@@ -141,5 +141,9 @@ mkdir $WORKSPACE2/archive
 cp releasetools/zip/*.zip $WORKSPACE2/archive
 cp releasetools/tar/*.tar $WORKSPACE2/archive
 
+# Cleanup
+rm -rf releasetools/zip/*.zip
+rm -rf releasetools/tar/*.tar
+
 # chmod the files in case UMASK blocks permissions
 chmod -R ugo+r $WORKSPACE2/archive
